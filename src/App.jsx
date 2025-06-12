@@ -1,33 +1,32 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { Card, data } from './components/Card.jsx'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [index, setIndex] = useState(0)
+
+  const handlePrev = () => {
+    if (index >= 1) {
+      setIndex(index-1)
+    }
+  }
+
+  const handleNext = () => {
+    if (index < data.length - 1) {
+      setIndex(index+1)
+    }
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <h1>Name that Dog!</h1>
+      <Card index={index}></Card>
+
+      <div className="container">
+        <button className={`button ${ index == 0 ? 'inactive' : ''}`}onClick={handlePrev}>Prev</button>
+        <button className={`button ${ index == data.length-1 ? 'inactive' : ''}` }onClick={handleNext}>Next</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
