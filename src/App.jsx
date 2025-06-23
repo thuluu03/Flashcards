@@ -9,6 +9,8 @@ function App() {
   const [currentPos, setCurrentPos] = useState(0)
   const [guess, setGuess] = useState('')
   const [inputError, setInputError] = useState(false)
+  const [streak, setStreak] = useState(0)
+  const [longestStreak, setLongestStreak] = useState(0)
 
   const getRandomIndex = () => {
     const allIndices = data.map((_, i) => i);
@@ -65,9 +67,15 @@ function App() {
     const answer = data[history[currentPos]].answer
 
     if (isValidGuess(guess, answer)) {
+      const newStreak = streak + 1
+      setStreak(newStreak)
+      setLongestStreak(Math.max(newStreak, longestStreak))
+
       setIsFlipped(true);
       setGuess('')
+      // TODO: disable the text input
     } else {
+      setStreak(0)
       setInputError(true);
     }
   }
@@ -79,6 +87,7 @@ function App() {
     const allIndices = data.map((_, i) => i);
     setHistory([allIndices[Math.floor(Math.random() * allIndices.length)]])
     setCurrentPos(0)
+    setStreak(0)
   }
 
   return (
@@ -86,6 +95,10 @@ function App() {
       <h1>Name that Dog!</h1>
       <p>Test your knowledge of dog breeds by naming each dog on the flashcards!</p>
       <p> Click the card to flip over when you've made your guess.</p>
+      <div className='streakContainer'>
+        <p>Longest Streak: {longestStreak}</p>
+        <p>Streak: {streak}</p>
+      </div>
       <Card 
         index={history[currentPos]} 
         isFlipped={isFlipped} 
